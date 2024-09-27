@@ -2,7 +2,7 @@
   "name": "vrchime",
   "description": "A desktop app for testing VRChat worlds from a .vrcw file. Configure instances, select the VRChat directory, and launch with custom settings.",
   "private": true,
-  "version": "0.1.0",
+  "version": "0.1.1",
   "type": "module",
   "scripts": {
     "dev": "vite",
@@ -15,6 +15,7 @@
     "@vueuse/core": "^11.1.0",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.1",
+    "js-yaml": "^4.1.0",
     "lucide-vue-next": "^0.446.0",
     "radix-vue": "^1.9.6",
     "tailwind-merge": "^2.5.2",
@@ -23,6 +24,7 @@
   },
   "devDependencies": {
     "@tauri-apps/cli": "^1",
+    "@types/js-yaml": "^4.0.9",
     "@types/node": "^22.7.2",
     "@vitejs/plugin-vue": "^5.0.5",
     "autoprefixer": "^10.4.20",
