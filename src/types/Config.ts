@@ -1,3 +1,3 @@
 export interface Config {
-  game_dir: string;
+  game_path: string;
 }

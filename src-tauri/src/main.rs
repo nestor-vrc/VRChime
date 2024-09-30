@@ -7,17 +7,19 @@ use serde::{Deserialize, Serialize}; // For serializing and deserializing struct
 use std::fs; // File system module for file operations.
 use std::path::Path; // Path utilities for handling file paths.
 use std::process::Command; // For executing external commands (launching VRChat).
+use winreg::enums::*; // For registry access on Windows.
+use winreg::RegKey; // Registry key handling.
 
 // Struct to represent the configuration data.
 #[derive(Serialize, Deserialize)]
 struct Config {
-    game_dir: String, // The directory path where VRChat is installed.
+    game_path: String, // The directory path where VRChat is installed.
 }
 
 // Function to save the game directory path in a YAML configuration file.
-fn save_config(game_dir: &str) -> Result<(), String> {
+fn save_config(game_path: &str) -> Result<(), String> {
     let config = Config {
-        game_dir: game_dir.to_string(), // Wrap the game directory in the Config struct.
+        game_path: game_path.to_string(), // Wrap the game directory in the Config struct.
     };
 
     // Determine the path to the temp directory and store the config in a subfolder "VRChime".
@@ -38,19 +40,41 @@ fn save_config(game_dir: &str) -> Result<(), String> {
     }
 }
 
+// Function to load VRChat install path from the Windows registry.
+fn load_registry_vrc_install_path() -> Option<String> {
+    // Open the "Software\\VRChat" registry key from HKEY_CURRENT_USER.
+    let hkcu = RegKey::predef(HKEY_CURRENT_USER);
+    if let Ok(vrchat_key) = hkcu.open_subkey("Software\\VRChat") {
+        // Try to read the default value from the VRChat registry key.
+        if let Ok(path) = vrchat_key.get_value::<String, _>("") {
+            return Some(format!("{}\\VRChat.exe", path));
+        }
+    }
+    None // Return None if the registry key or value isn't found.
+}
+
 // Tauri command to retrieve the configuration file's content.
 #[tauri::command]
 fn get_config() -> String {
     let temp_dir = std::env::temp_dir();
     let config_path = temp_dir.join("VRChime/config.yaml");
 
-    // Attempt to read the config file; return its content if successful.
+    // Attempt to read the config file; if found, return its content.
     if let Ok(config) = fs::read_to_string(&config_path) {
         return config;
     }
 
-    // If the config file is missing or unreadable, return a default empty config.
-    r#"{ "game_dir": "" }"#.to_string()
+    // If the config file is missing or unreadable, fall back to the registry.
+    if let Some(registry_path) = load_registry_vrc_install_path() {
+        // If a registry path is found, return a JSON config with that value.
+        return serde_yaml::to_string(&Config {
+            game_path: registry_path,
+        })
+        .unwrap();
+    }
+
+    // If both the config file and registry are missing/unreadable, return a default empty config.
+    r#"game_path: """#.to_string()
 }
 
 // Tauri command to get the version of the app.
@@ -62,20 +86,19 @@ fn get_version() -> String {
 
 // Tauri command to launch VRChat instances based on user input.
 #[tauri::command]
-fn launch_vrchat(game_dir: String, vrcw_file: String, client_count: u32) -> String {
+fn launch_vrchat(game_path: String, vrcw_file: String, client_count: u32) -> String {
     // Basic validation: Ensure the game directory and VRCW file are provided.
-    if game_dir.is_empty() || vrcw_file.is_empty() {
-        return "Error: Game directory or file path is empty.".to_string();
+    if game_path.is_empty() || vrcw_file.is_empty() {
+        return "Error: Game path or file path is empty.".to_string();
     }
 
     // Construct the path to the VRChat executable.
-    let exe_path = format!("{}/VRChat.exe", game_dir);
-    if !Path::new(&exe_path).exists() {
-        return format!("Error: VRChat.exe not found at {}", game_dir); // Error if VRChat.exe is missing.
+    if !Path::new(&game_path).exists() {
+        return format!("Error: VRChat.exe not found at {}", game_path); // Error if VRChat.exe is missing.
     }
 
     // Save the game directory path to the configuration file.
-    if let Err(err) = save_config(&game_dir) {
+    if let Err(err) = save_config(&game_path) {
         return format!("Error saving config: {}", err); // Handle errors in saving the config.
     }
 
@@ -88,7 +111,7 @@ fn launch_vrchat(game_dir: String, vrcw_file: String, client_count: u32) -> Stri
         );
 
         // Use Command to spawn a new VRChat process with the constructed arguments.
-        if Command::new(&exe_path)
+        if Command::new(&game_path)
             .args(args.split_whitespace()) // Split args string into space-separated arguments.
             .spawn()
             .is_err()

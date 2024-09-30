@@ -4,13 +4,14 @@ version = 3
 
 [[package]]
 name = "VRChime"
-version = "0.1.1"
+version = "0.2.0"
 dependencies = [
  "serde",
  "serde_json",
  "serde_yaml",
  "tauri",
  "tauri-build",
+ "winreg",
 ]
 
 [[package]]

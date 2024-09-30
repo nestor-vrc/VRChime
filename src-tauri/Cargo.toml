@@ -1,6 +1,6 @@
 [package]
 name = "VRChime"
-version = "0.1.1"
+version = "0.2.0"
 description = "A desktop app for testing VRChat worlds from a .vrcw file. Configure instances, select the VRChat directory, and launch with custom settings."
 authors = ["pyyupsk <pyyupsk@proton.me>"]
 license = "MIT"
@@ -21,6 +21,7 @@ tauri = { version = "1", features = [
 serde = { version = "1", features = ["derive"] }
 serde_json = "1"
 serde_yaml = "0.9"
+winreg = "0.52"
 
 [features]
 # This feature is used for production builds or when a dev server is not specified, DO NOT REMOVE!!

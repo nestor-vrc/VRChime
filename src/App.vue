@@ -20,14 +20,14 @@ import { FolderOpen, FileUp, Play } from 'lucide-vue-next'
 import { Config } from '@/types/Config';
 
 // Reactive variables to hold the user selections and inputs.
-const gameDir = ref<string>('')  // Holds the selected game directory path.
+const gamePath = ref<string>('')  // Holds the selected game path.
 const vrcwFile = ref<string>('') // Holds the selected .vrcw file path.
 const clientCount = ref<number>(1) // Holds the number of VRChat instances to launch (minimum 1).
 const version = ref<string>('') // Holds the version of the app.
 
-// Computed property to check if the game directory and VRCW file are selected.
+// Computed property to check if the game path and VRCW file are selected.
 // This is used to enable or disable the launch button.
-const canLaunch = computed(() => !!gameDir.value && !!vrcwFile.value)
+const canLaunch = computed(() => !!gamePath.value && !!vrcwFile.value)
 
 // Lifecycle hook - Executes after the component is mounted to the DOM.
 onMounted(async () => {
@@ -36,12 +36,12 @@ onMounted(async () => {
     const configString = await invoke<string>('get_config')
     const versionString = await invoke<string>('get_version')
 
-    // Parse the YAML config file to extract values (e.g., game directory).
+    // Parse the YAML config file to extract values (e.g., game path).
     const parsedConfig = yaml.load(configString) as Config | null
 
-    // Check if the parsed config contains a valid game directory and set it.
-    if (parsedConfig && parsedConfig.game_dir) {
-      gameDir.value = parsedConfig.game_dir
+    // Check if the parsed config contains a valid game path and set it.
+    if (parsedConfig && parsedConfig.game_path) {
+      gamePath.value = parsedConfig.game_path
     } else {
       // Throw an error if the format is invalid.
       throw new Error("Invalid config format")
@@ -60,16 +60,16 @@ onMounted(async () => {
   }
 })
 
-// Opens a dialog to select the VRChat game directory.
-const selectGameDirectory = async () => {
+// Opens a dialog to select the VRChat game path.
+const selectGamePathectory = async () => {
   const selected = await open({
     directory: true,
     multiple: false, // Only one directory should be selected.
     title: 'Select VRChat Directory'
   })
-  // If a directory is selected, set its path to `gameDir`.
+  // If a directory is selected, set its path to `gamePath`.
   if (selected && typeof selected === 'string') {
-    gameDir.value = selected
+    gamePath.value = selected
   }
 }
 
@@ -95,9 +95,9 @@ const onClientCountChange = () => {
 // Invokes the backend to launch VRChat with the selected settings.
 const launchVRChat = async () => {
   try {
-    // Call the Tauri backend to launch VRChat with the provided game directory, .vrcw file, and instance count.
+    // Call the Tauri backend to launch VRChat with the provided game path, .vrcw file, and instance count.
     const result = await invoke<string>('launch_vrchat', {
-      gameDir: gameDir.value,
+      gamePath: gamePath.value,
       vrcwFile: vrcwFile.value,
       clientCount: clientCount.value
     })
@@ -129,11 +129,11 @@ const launchVRChat = async () => {
         <!-- Form for launching VRChat -->
         <form @submit.prevent="launchVRChat" class="space-y-4">
           <div class="space-y-2">
-            <!-- Input for selecting VRChat game directory -->
-            <Label for="gameDir">VRChat Game Directory</Label>
+            <!-- Input for selecting VRChat game path -->
+            <Label for="gamePath">VRChat Game path</Label>
             <div class="flex">
-              <Input v-model="gameDir" id="gameDir" placeholder="Select VRChat directory" readonly />
-              <Button type="button" variant="outline" class="ml-2" @click="selectGameDirectory">
+              <Input v-model="gamePath" id="gamePath" placeholder="Select VRChat directory" readonly />
+              <Button type="button" variant="outline" class="ml-2" @click="selectGamePathectory">
                 <FolderOpen class="h-4 w-4" />
               </Button>
             </div>

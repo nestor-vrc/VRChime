@@ -8,7 +8,7 @@
   },
   "package": {
     "productName": "VRChime",
-    "version": "0.1.1"
+    "version": "0.2.0"
   },
   "tauri": {
     "allowlist": {
@@ -17,7 +17,9 @@
         "all": false,
         "readDir": true,
         "readFile": true,
-        "scope": ["**"]
+        "scope": [
+          "**"
+        ]
       },
       "dialog": {
         "all": false,
@@ -26,7 +28,7 @@
     },
     "windows": [
       {
-        "title": "VRChime: v0.1.1 - By pyyupsk",
+        "title": "VRChime: v0.2.0 - By pyyupsk",
         "theme": "Dark",
         "width": 800,
         "height": 600,
