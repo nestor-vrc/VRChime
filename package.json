@@ -2,7 +2,7 @@
   "name": "vrchime",
   "description": "A desktop app for testing VRChat worlds from a .vrcw file. Configure instances, select the VRChat directory, and launch with custom settings.",
   "private": true,
-  "version": "0.2.0",
+  "version": "0.3.0",
   "type": "module",
   "scripts": {
     "dev": "vite",

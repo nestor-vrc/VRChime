@@ -8,7 +8,7 @@
   },
   "package": {
     "productName": "VRChime",
-    "version": "0.2.0"
+    "version": "0.3.0"
   },
   "tauri": {
     "allowlist": {
@@ -28,7 +28,7 @@
     },
     "windows": [
       {
-        "title": "VRChime: v0.2.0 - By pyyupsk",
+        "title": "VRChime: v0.3.0 - By Nestor VRC (@pyyupsk)",
         "theme": "Dark",
         "width": 800,
         "height": 600,

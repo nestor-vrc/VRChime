@@ -166,8 +166,8 @@ const launchVRChat = async () => {
       <CardFooter class="flex items-center justify-between">
         <!-- Copyright information at the top of the card -->
         <p class="text-xs text-muted-foreground">
-          Copyright &copy; {{ new Date().getFullYear() }} <a href="https://github.com/pyyupsk"
-            class="text-foreground hover:underline">pyyupsk</a>, all rights reserved.
+          Copyright &copy; {{ new Date().getFullYear() }} <a href="https://github.com/nestor-vrc"
+            class="text-foreground hover:underline">Nestor VRC</a>, all rights reserved.
         </p>
         <!-- Version information at the bottom of the card -->
         <p class="text-xs text-muted-foreground">VRChime v{{ version }}</p>

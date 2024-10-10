@@ -1,10 +1,10 @@
 [package]
 name = "VRChime"
-version = "0.2.0"
+version = "0.3.0"
 description = "A desktop app for testing VRChat worlds from a .vrcw file. Configure instances, select the VRChat directory, and launch with custom settings."
-authors = ["pyyupsk <pyyupsk@proton.me>"]
+authors = ["Nestor VRC", "pyyupsk <pyyupsk@proton.me>"]
 license = "MIT"
-repository = "https://github.com/pyyupsk/VRChime"
+repository = "https://github.com/nestor-vrc/VRChime"
 edition = "2021"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
