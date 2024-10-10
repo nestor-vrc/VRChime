@@ -119,8 +119,8 @@ const launchVRChat = async () => {
 </script>
 
 <template>
-  <div class="min-h-screen bg-background flex items-center justify-center p-4">
-    <Card class="w-full max-w-md">
+  <div class="min-h-screen bg-background flex items-center justify-center">
+    <Card class="w-full max-w-md rounded-none">
       <CardHeader>
         <!-- Logo at the top of the card -->
         <img src="@/assets/logo.png" class="w-32 h-auto mx-auto" />
@@ -163,14 +163,14 @@ const launchVRChat = async () => {
           </Button>
         </form>
       </CardContent>
-      <CardFooter class="flex items-center justify-between">
+      <CardFooter class="flex items-center justify-between bg-secondary p-6">
         <!-- Copyright information at the top of the card -->
-        <p class="text-xs text-muted-foreground">
+        <p class="text-xs text-secondary-foreground">
           Copyright &copy; {{ new Date().getFullYear() }} <a href="https://github.com/nestor-vrc"
             class="text-foreground hover:underline">Nestor VRC</a>, all rights reserved.
         </p>
         <!-- Version information at the bottom of the card -->
-        <p class="text-xs text-muted-foreground">VRChime v{{ version }}</p>
+        <p class="text-xs text-secondary-foreground">VRChime <span class="text-foreground">v{{ version }}</span></p>
       </CardFooter>
     </Card>
   </div>
